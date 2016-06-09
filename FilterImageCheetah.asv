@@ -1,0 +1,112 @@
+% Author : Sunil Kumar Vengalil
+clear all
+close all
+
+%parameters
+sigmay = 2.7;
+numOrient = 6;
+% try with 1, 3 and 6
+numScales = 1;
+scalingFactor = 1.4;
+elongation = 3;
+ntex = 2;
+
+folderName = 'C:\DTD\segmentation\';
+outfolderName = strcat(folderName,'output\');
+
+suffixedFileName='banded_0008_scaly_0131';
+
+errors= zeros(12,1);
+errorsNorm = zeros(12,1);
+idealResult = [1 0 ; 0 1];
+idealResult1 = [0 1 ; 1 0];
+
+
+tmapfileName = strcat(outfolderName, suffixedFileName,'_sigma',num2str(sigmay),'_numOrientation',num2str(numOrient),'_numScales',num2str(numScales),'_tmapabs','.jpg');
+preProcessedInputFileName = strcat(outfolderName,suffixedFileName,'_preprocessed','.jpg');
+
+    if exist(preProcessedInputFileName, 'file')
+        im1 = imread( strcat(preProcessedInputFileName) );
+    else
+        im1 = imread( strcat(strcat(folderName,suffixedFileName,'.jpg') ) );
+    end
+    
+    if(size(im1,3) ~= 1)
+            im = rgb2gray(im1);
+    else
+        im = im1;
+    end
+
+    clear im1;
+
+    if(size(im,1) > 800 || size(im,2) > 800)
+        f = 800/ max(size(im,1),size(im,2));
+        im = imresize(im,f);
+    end
+    im = double(im) /255;
+
+    [height,width] = size(im);
+
+    elongationStep = 1;
+    %for elongationStep = 1 : 12
+
+    elongation = elongationStep * 3;
+    fb = fbCreate(numOrient,sigmay,numScales,scalingFactor,elongation);
+    fim = fbRun(fb,im);
+    [tmap,tex] = computeTextonsAbs(fim,ntex);
+
+        %[tim,tperm] = visTextons(tex,fb);
+        %texmapFig = figure;
+        %imshow(tmap,[]);
+        bintmap = tmap;
+        bintmap(tmap == 2) = 0;
+        %imshow(bintmap,[]);
+    %imwrite(bintmap,tmapfileName,'jpg');
+    %imwrite(im,preProcessedInputFileName,'jpg')
+
+    %classificationMatrix = GetClassificationMatrixVertical(ntex,tmap,height,width);
+
+        %error = sum(sum(abs(bintmap - refImage)));
+        %error1 = sum(sum(abs(bintmap - imcomplement(refImage) )));
+        %if(error1 < error)
+        %    error = error1;
+        %end
+
+
+    %     confusionMatrix = GetConfusionMatrix(ntex, bintmap,  refImage);
+    %     errorsNorm(elongationStep,1) = norm(confusionMatrix - idealResult);
+    %     if (  norm(confusionMatrix - idealResult1) < errorsNorm(elongationStep,1) );
+    %         errorsNorm(elongationStep,1) =  norm(confusionMatrix - idealResult1);
+    %     end
+    %     
+    %     
+
+        %classificationMatrix = GetClassificationMatrix(ntex,tmap,xv,yv);
+        %classificationMatrix = GetClassificationMatrix(ntex,tmap,refImage);
+        % 
+        %errors(elongationStep,1) = error/(height * width);
+        %errorsNorm(elongationStep,1) = norm(classificationMatrix -  idealResult);
+        %if norm(classificationMatrix - idealResult1) < errorsNorm(elongationStep,1)
+         %     errorsNorm(elongationStep,1) = norm(classificationMatrix - idealResult1);
+        %end
+
+
+        % 
+
+         clear fim
+         clear tmap;
+         clear suffixedFileName;
+         %clear fb;
+         clear bintmap;
+    %end
+        clear im;
+
+% 
+ %classificationMatrix
+ %error
+%saveas(texmapFig,tmapfileName,'jpg');
+%  im(tmap ==2) = 0;
+%  imshow(im,[]);
+
+
+ 

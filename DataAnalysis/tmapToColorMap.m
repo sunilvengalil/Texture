@@ -1,0 +1,18 @@
+figure;
+ctmapfilename = strcat(outfolderName,suffixedFileName,'_ctmap','.jpg');
+[h,w] = size(im);
+r = zeros(h,w);
+g = zeros(h,w);
+b = zeros(h,w);
+
+r(tmap == 1) = 256;
+g(tmap ==2) = 256;
+ctmap = r;
+ctmap(:,:,2) = g;
+ctmap(:,:,3) = b;
+imshow(ctmap);
+
+figure;
+
+imshow(im);
+imwrite(ctmap,ctmapfilename,'jpg');

@@ -1,0 +1,63 @@
+function [ im ] = CreateImage(width,height, n1,  n2  )
+%CreateImage create an image of size width X height
+% n1 points belonging to and n2 points belonging to class 2
+
+im = ones(height,width,3);
+
+centerCluster1 = [height/2, width/4];
+centerCluster2 = [height/2,3 * width/4];
+
+im(centerCluster1(1)-5: centerCluster1(1)+5, centerCluster1(2) - 5:centerCluster1(2) + 5 ,2) = 0; 
+%im(centerCluster1, centerCluster2,3) = 0;
+
+
+%generate points for cluster 1
+% mu = centerCluster1;
+% Sigma = [.25 .3; .3 1];
+% x1 = 1:.2:200; x2 = 1:.2:200;
+% [X1,X2] = meshgrid(x1,x2);
+% F = mvnpdf([X1(:) X2(:)],mu,Sigma);
+% F = reshape(F,length(x2),length(x1));
+% surf(x1,x2,F);
+% caxis([min(F(:))-.5*range(F(:)),max(F(:))]);
+% axis([1 200 1 200 0 .4])
+% xlabel('x1'); ylabel('x2'); zlabel('Probability Density');
+% 
+
+
+mu = centerCluster1;
+Sigma = [5 0; 0 5];
+x1 = 1:1:200; x2 = 1:1:200;
+[X1,X2] = meshgrid(x1,x2);
+F = mvnpdf([X1(:) X2(:)],mu,Sigma);
+F = reshape(F,length(x2),length(x1));
+u = rand(height,width);
+
+ indices = F - u > 0;
+ 
+
+% surf(x1,x2,F);
+% caxis([min(F(:))-.5*range(F(:)),max(F(:))]);
+% axis([1 200 1 200 0 .4])
+% xlabel('x1'); ylabel('x2'); zlabel('Probability Density');
+
+for i = 1:width
+    for j = 1:height
+       if( F(j,i) > u(j,i))    
+    end
+end
+
+
+
+
+
+
+
+%generate points for cluster 2
+
+
+
+
+
+end
+

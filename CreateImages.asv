@@ -1,0 +1,23 @@
+
+indices1 = [3,10,50,40,70];
+indices2 = [10,20,30,40,60];
+bandedDir = 'C:\DTD\data\dtd\images\banded';
+scalyDir = 'C:\DTD\data\dtd\images\scaly';
+bandedFiles = dir(bandedDir);
+scalyFiles = dir(scalyDir);
+
+
+for bandedIndex = 1:size(indices1);
+    for scalyIndex = 1:size(indices2);
+        im1 = imread(strcat(bandedDir,'\',bandedFiles(indices1(bandedIndex) ).name));
+        im2 = imread(strcat(scalyDir,'\',scalyFiles(indices2(scalyIndex) ).name));
+        
+        
+        outfileName = strcat(bandedFiles(indices1(bandedIndex) ).name,'_',scalyFiles(indices2(scalyIndex) ).name);
+        imwrite([im1;im2],strcat('C:\DTD\Segmentation\',outfileName) );
+    end
+    
+end
+
+
+
