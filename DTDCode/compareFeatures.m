@@ -2,6 +2,7 @@
 %compares two sets of local features 
 clear all;
 close all;
+clc;
 
 seed1  = 3;
 seed2 = 4;
